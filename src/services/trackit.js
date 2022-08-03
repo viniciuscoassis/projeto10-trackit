@@ -12,8 +12,15 @@ function postLogin(body) {
   return promisse;
 }
 
+function createHeaders() {
+  const auth = localStorage.getItem("trackit");
+  const config = { headers: { Authorization: `Bearer ${auth}` } };
+  return config;
+}
+
 function postCreateHabits(body) {
-  let promisse = axios.post(`${BASE_URL}habits`, body);
+  let config = createHeaders();
+  let promisse = axios.post(`${BASE_URL}habits`, body, config);
   return promisse;
 }
 
@@ -22,26 +29,31 @@ function postCreateHabits(body) {
 // }
 
 function getHabits() {
-  let promisse = axios.get(`${BASE_URL}habits`);
+  let config = createHeaders();
+  let promisse = axios.get(`${BASE_URL}habits`, config);
   return promisse;
 }
 
 function getTodaysHabit() {
-  let promisse = axios.get(`${BASE_URL}habits/today`);
+  let config = createHeaders();
+  let promisse = axios.get(`${BASE_URL}habits/today`, config);
   return promisse;
 }
 
 function postHabitDone(id) {
-  let promisse = axios.post(`${BASE_URL}habits/${id}/check`);
+  let config = createHeaders();
+  let promisse = axios.post(`${BASE_URL}habits/${id}/check`, config);
   return promisse;
 }
-function postHabitDeselect(id) {
-  let promisse = axios.post(`${BASE_URL}habits/${id}/uncheck`);
+function postHabitDeselect(id, body) {
+  let config = createHeaders();
+  let promisse = axios.post(`${BASE_URL}habits/${id}/uncheck`, body, config);
   return promisse;
 }
 
 function getHabitHistory() {
-  let promisse = axios.get(`${BASE_URL}habits/history/daily`);
+  let config = createHeaders();
+  let promisse = axios.get(`${BASE_URL}habits/history/daily`, config);
   return promisse;
 }
 

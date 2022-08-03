@@ -4,19 +4,61 @@ import styled from "styled-components";
 import logo from "../assets/img/logo.png";
 import eye from "../assets/img/eye.png";
 import noeye from "../assets/img/noeye.png";
-import { postRegistration } from "../services/trackit";
+import { postLogin, postRegistration } from "../services/trackit";
+import { ThreeDots } from "react-loader-spinner";
 
 export default function LoginPage({ type }) {
   const [passwordShown, setPasswordShown] = useState(false);
   const [form, setForm] = useState({});
+  const [isDisabled, setIsDisabled] = useState(false);
 
   let navigate = useNavigate();
 
+  function handleSignUp() {
+    setIsDisabled(false);
+    navigate("/");
+  }
+
+  function handleForm(e) {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  }
+
+  function submitFormLogin(e) {
+    e.preventDefault();
+    let promisse;
+    promisse = postLogin(form);
+    setIsDisabled(true);
+    promisse
+      .then((res) => {
+        console.log(res);
+        setIsDisabled(false);
+        localStorage.setItem(
+          "trackit",
+          JSON.stringify({ token: res.data.token, timestamp: +new Date() })
+        );
+        navigate("/hoje", {
+          state: { dados: res.data },
+        });
+      })
+      .catch((res) => {
+        setIsDisabled(false);
+        alert(res.response.data.message);
+      });
+  }
+
   function submitForm(e) {
     e.preventDefault();
-    postRegistration(form)
-      .then(() => navigate("/"))
-      .catch((erro) => alert(erro.response.data.message));
+
+    let promisse;
+    promisse = postRegistration(form);
+    setIsDisabled(true);
+    promisse
+      .then((res) => handleSignUp(res))
+      .catch(() => {
+        setIsDisabled(false);
+
+        alert("seu cadastro falhou, tente novamente");
+      });
   }
 
   return (
@@ -24,12 +66,21 @@ export default function LoginPage({ type }) {
       <Logo>
         <img src={logo} />
       </Logo>
-      <form>
-        <input type="email" placeholder="email"></input>
+
+      <form onSubmit={type == "login" ? submitFormLogin : submitForm}>
+        <input
+          type="email"
+          name="email"
+          placeholder="email"
+          onChange={handleForm}
+          disabled={isDisabled}
+        ></input>
         <input
           type={passwordShown ? "text" : "password"}
           placeholder="senha"
           name="password"
+          onChange={handleForm}
+          disabled={isDisabled}
         ></input>
         <img
           src={passwordShown ? noeye : eye}
@@ -43,23 +94,33 @@ export default function LoginPage({ type }) {
               type="text"
               placeholder="nome"
               name="name"
-              onChange={(e) =>
-                setForm({ ...form, [e.target.name]: e.target.value })
-              }
+              onChange={handleForm}
+              disabled={isDisabled}
             ></input>
             <input
               type="text"
               placeholder="foto"
               name="image"
-              onChange={(e) =>
-                setForm({ ...form, [e.target.name]: e.target.value })
-              }
+              onChange={handleForm}
+              disabled={isDisabled}
             ></input>
           </>
         ) : (
           ""
         )}
-        <button>Entrar</button>
+        <button>
+          {type == "login" ? (
+            isDisabled ? (
+              <ThreeDots color="#ffffff" height={80} width={80} />
+            ) : (
+              "Entrar"
+            )
+          ) : isDisabled ? (
+            <ThreeDots color="#ffffff" height={80} width={80} />
+          ) : (
+            "Cadastrar"
+          )}
+        </button>
       </form>
 
       {type != "login" ? (
@@ -106,6 +167,7 @@ const Wrapper = styled.div`
     border-radius: 5px;
     padding-left: 6px;
     border: 2px solid rgba(0, 0, 0, 0.1);
+    font-family: "Lexend Deca", sans-serif;
 
     font-size: 16px;
   }
@@ -113,12 +175,16 @@ const Wrapper = styled.div`
     color: rgba(0, 0, 0, 0.2);
   }
   form button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 45px;
     border-radius: 5px;
     border: none;
     font-size: 16px;
     color: white;
     background-color: #52b6ff;
+    font-family: "Lexend Deca", sans-serif;
   }
 
   h3 {
