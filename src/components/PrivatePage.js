@@ -1,12 +1,16 @@
+import { useContext } from "react";
 import { ThreeDots } from "react-loader-spinner";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import UserContext from "../assets/Context";
+import Footer from "./Footer/Footer";
 import Headers from "./Headers";
 
 export default function PrivatePage({ children }) {
   const auth = JSON.parse(localStorage.getItem("trackit"));
   let navigate = useNavigate();
-  const location = useLocation();
+
+  const { infoUser, setInfoUser } = useContext(UserContext);
 
   if (auth) {
     const then = auth.timestamp;
@@ -15,14 +19,16 @@ export default function PrivatePage({ children }) {
     if (now - then < 1000 * 60 * 10) {
       return (
         <Wrapper>
-          <Headers profilePic={location.state.dados.image} />
+          <Headers profilePic={infoUser.image} />
+          <ContainerContent>{children}</ContainerContent>
+          <Footer></Footer>
         </Wrapper>
       );
     } else localStorage.clear("trackit");
   } else
     setTimeout(() => {
       navigate("/");
-    }, 3000);
+    }, 2000);
   return (
     <ErrorMessage>
       <h1>Você não tem acesso a esta página</h1>
@@ -33,15 +39,20 @@ export default function PrivatePage({ children }) {
   );
 }
 
+const ContainerContent = styled.div`
+  padding-top: 95px;
+`;
+
 const ErrorMessage = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   height: 200px;
-  margin-top: 50px;
+  padding-top: 50px;
 `;
 
 const Wrapper = styled.section`
-  background-color: red;
+  height: 100vmax;
+  background-color: #f2f2f2;
 `;

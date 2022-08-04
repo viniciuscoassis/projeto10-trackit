@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../assets/img/logo.png";
@@ -6,11 +6,14 @@ import eye from "../assets/img/eye.png";
 import noeye from "../assets/img/noeye.png";
 import { postLogin, postRegistration } from "../services/trackit";
 import { ThreeDots } from "react-loader-spinner";
+import UserContext from "../assets/Context";
 
 export default function LoginPage({ type }) {
   const [passwordShown, setPasswordShown] = useState(false);
   const [form, setForm] = useState({});
   const [isDisabled, setIsDisabled] = useState(false);
+
+  const { setInfoUser } = useContext(UserContext);
 
   let navigate = useNavigate();
 
@@ -30,7 +33,7 @@ export default function LoginPage({ type }) {
     setIsDisabled(true);
     promisse
       .then((res) => {
-        console.log(res);
+        setInfoUser(res.data);
         setIsDisabled(false);
         localStorage.setItem(
           "trackit",
