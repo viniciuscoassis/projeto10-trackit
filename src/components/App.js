@@ -1,12 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import GlobalStyle from "../assets/globalStyles";
-import HabitsPage from "./HabitsPage";
+import HabitsPage from "./HabitsPage/HabitsPage";
 import LoginPage from "./Login";
 import PrivatePage from "./PrivatePage";
 import UserContext from "../assets/Context";
 import { useState } from "react";
 import TodaysHabit from "./TodaysHabit";
-import HabitsHistory from "./HabitsHistory";
+import HistoryPage from "./HistoryPage";
 
 export default function App() {
   const [infoUser, setInfoUser] = useState({});
@@ -42,7 +42,7 @@ export default function App() {
               element={
                 <PrivatePage>
                   {" "}
-                  <HabitsHistory />{" "}
+                  <HistoryPage />{" "}
                 </PrivatePage>
               }
             />

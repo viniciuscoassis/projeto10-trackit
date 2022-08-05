@@ -13,7 +13,7 @@ function postLogin(body) {
 }
 
 function createHeaders() {
-  const auth = localStorage.getItem("trackit");
+  const auth = JSON.parse(localStorage.getItem("trackit")).token;
   const config = { headers: { Authorization: `Bearer ${auth}` } };
   return config;
 }
@@ -24,9 +24,14 @@ function postCreateHabits(body) {
   return promisse;
 }
 
-// function deleteHabit(){
-
-// }
+function deleteHabit(id) {
+  let config = createHeaders();
+  let promisse = axios.delete(
+    `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`,
+    config
+  );
+  return promisse;
+}
 
 function getHabits() {
   let config = createHeaders();
@@ -66,4 +71,5 @@ export {
   postHabitDone,
   postHabitDeselect,
   getHabitHistory,
+  deleteHabit,
 };

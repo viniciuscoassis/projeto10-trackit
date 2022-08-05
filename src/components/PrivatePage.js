@@ -16,7 +16,7 @@ export default function PrivatePage({ children }) {
     const then = auth.timestamp;
     const now = +new Date();
 
-    if (now - then < 1000 * 60 * 10) {
+    if (now - then < 1000 * 60 * 30) {
       return (
         <Wrapper>
           <Headers profilePic={infoUser.image} />
@@ -40,7 +40,7 @@ export default function PrivatePage({ children }) {
 }
 
 const ContainerContent = styled.div`
-  padding-top: 95px;
+  padding: 95px 0;
 `;
 
 const ErrorMessage = styled.div`
@@ -53,6 +53,7 @@ const ErrorMessage = styled.div`
 `;
 
 const Wrapper = styled.section`
-  height: 100vmax;
+  height: 100%;
+  min-height: 750px;
   background-color: #f2f2f2;
 `;

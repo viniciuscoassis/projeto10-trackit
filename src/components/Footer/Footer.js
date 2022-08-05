@@ -1,18 +1,32 @@
-import { CircularProgressbar } from "react-circular-progressbar";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export default function Footer() {
-  const percentage = 80;
+  const percentage = 60;
   return (
     <Wrapper>
       <Container>
         <Link to="/habitos">
           <div>Hábitos</div>
         </Link>
+
         <Link to="/hoje">
           <Hoje>
-            <h3>Hoje</h3>
+            <CircularProgressbar
+              value={percentage}
+              text={`Hoje`}
+              background
+              backgroundPadding={6}
+              styles={buildStyles({
+                backgroundColor: "#52B6FF",
+                textColor: "#fff",
+                pathColor: "#fff",
+                trailColor: "transparent",
+              })}
+            />
+            ;{" "}
           </Hoje>
         </Link>
         <Link to="/historico">
@@ -22,10 +36,6 @@ export default function Footer() {
     </Wrapper>
   );
 }
-const Blabla = styled.div`
-  width: 200px;
-  height: 200px;
-`;
 
 const Wrapper = styled.div`
   background: white;
@@ -55,12 +65,4 @@ const Hoje = styled.div`
   width: 91px;
   bottom: 15%;
   left: 34%;
-  background-color: #52b6ff;
-  border-radius: 50%;
-  h3 {
-    position: absolute;
-    bottom: 40%;
-    left: 28%;
-    color: white;
-  }
 `;
