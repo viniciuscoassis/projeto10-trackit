@@ -2,9 +2,10 @@ import styled from "styled-components";
 import Checkbox from "./Checkbox";
 import bin from "../../assets/img/bin.png";
 import { deleteHabit } from "../../services/trackit";
+import { useEffect } from "react";
 
 export default function HabitsListed({ habit }) {
-  const week = [
+  const defaultWeek = [
     { id: 0, weekday: "D", selected: false },
     { id: 1, weekday: "S", selected: false },
     { id: 2, weekday: "T", selected: false },
@@ -14,27 +15,39 @@ export default function HabitsListed({ habit }) {
     { id: 6, weekday: "S", selected: false },
   ];
 
-  function clickDeleteHabit() {
-    let promisse;
-    {
-      window.confirm("Quer mesmo deletar este hábito?")
-        ? (promisse = deleteHabit(habit.id))
-        : console.log("negou");
+  let thisWeek = defaultWeek.map((value) => {
+    for (let i = 0; i < habit.days.length; i++) {
+      if (habit.days[i] == value.id) return { ...value, selected: true };
     }
-    promisse
-      .then((res) => alert("Hábito excluido com sucesso"))
-      .catch((res) => console.log(res));
-  }
+    return { ...value };
+  });
 
   return (
     <Wrapper>
       <div>{habit.name}</div>
       <Checkboxes>
-        {week.map((weekday) => (
-          <Checkbox key={weekday.id}> </Checkbox>
+        {thisWeek.map((value) => (
+          <Checkbox
+            onClick={() => console.log("bloqueadoj")}
+            key={value.id}
+            isSelected={value.selected}
+          >
+            {value.weekday}
+          </Checkbox>
         ))}
       </Checkboxes>
-      <img onClick={() => clickDeleteHabit()} src={bin} />
+      <img
+        onClick={() => {
+          {
+            let a = window.confirm("Quer mesmo deletar este hábito?")
+              ? deleteHabit(habit.id)
+                  .then(() => alert("Hábito excluido com sucesso"))
+                  .catch((res) => console.log(res))
+              : "";
+          }
+        }}
+        src={bin}
+      />
     </Wrapper>
   );
 }

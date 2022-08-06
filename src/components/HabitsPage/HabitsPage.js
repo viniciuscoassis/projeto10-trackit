@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import { ThreeDots } from "react-loader-spinner";
 
 import styled from "styled-components";
 import { getHabits, postCreateHabits } from "../../services/trackit";
-import Checkbox from "./Checkbox";
 import HabitsListed from "./HabitsListed";
+import HabitForm from "./HabitForm";
 
 export default function HabitsPage() {
   const [createHabits, setCreateHabits] = useState(false);
@@ -13,15 +12,7 @@ export default function HabitsPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [shownHabits, setShownHabits] = useState(null);
 
-  const week = [
-    { id: 0, weekday: "D", selected: false },
-    { id: 1, weekday: "S", selected: false },
-    { id: 2, weekday: "T", selected: false },
-    { id: 3, weekday: "Q", selected: false },
-    { id: 4, weekday: "Q", selected: false },
-    { id: 5, weekday: "S", selected: false },
-    { id: 6, weekday: "S", selected: false },
-  ];
+  useEffect(() => console.log(days), []);
 
   useEffect(() => {
     getHabits().then((value) => setShownHabits(value.data));
@@ -41,6 +32,8 @@ export default function HabitsPage() {
       .catch(() => setIsLoading(false));
 
     body = null;
+    setDays([]);
+    setNameCreatedHabit("");
     setTimeout(() => {
       setCreateHabits(false);
     }, 1000);
@@ -52,42 +45,20 @@ export default function HabitsPage() {
         <h1>Meus Hábitos</h1>
         <div onClick={() => setCreateHabits(!createHabits)}>+</div>
       </Title>
-      <Container>
-        {createHabits ? (
-          <HabitForm onSubmit={sendHabit}>
-            <ContainerContent>
-              <input
-                disabled={isLoading}
-                type="text"
-                name="name"
-                placeholder="nome do hábito"
-                onChange={(e) => setNameCreatedHabit(e.target.value)}
-                value={nameCreatedHabit}
-              ></input>
-              <Checkboxes>
-                {week.map((weekday) => (
-                  <Checkbox key={weekday.id}> </Checkbox>
-                ))}
-              </Checkboxes>
 
-              <CancelSave>
-                <div onClick={() => setCreateHabits(!createHabits)}>
-                  {" "}
-                  Cancelar
-                </div>
-                <button role="button" type="submit">
-                  {isLoading ? (
-                    <ThreeDots color="#ffffff" height={80} width={60} />
-                  ) : (
-                    "Salvar"
-                  )}
-                </button>
-              </CancelSave>
-            </ContainerContent>
-          </HabitForm>
-        ) : (
-          ""
-        )}
+      <HabitForm
+        none={createHabits ? "flex" : "none"}
+        isLoading={isLoading}
+        sendHabit={sendHabit}
+        createHabits={createHabits}
+        setCreateHabits={createHabits}
+        setNameCreatedHabit={setNameCreatedHabit}
+        nameCreatedHabit={nameCreatedHabit}
+        setDays={setDays}
+        days={days}
+      />
+
+      <Container>
         {shownHabits ? (
           shownHabits.map((value) => (
             <HabitsListed key={value.id} habit={value} />
@@ -104,71 +75,6 @@ export default function HabitsPage() {
 }
 
 const Wrapper = styled.div``;
-
-const Checkboxes = styled.ul`
-  display: flex;
-  margin-top: 5px;
-`;
-
-const CancelSave = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 30px;
-
-  div {
-    cursor: pointer;
-    margin-left: 10px;
-    width: 84px;
-    height: 35px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 5px;
-  }
-  button {
-    cursor: pointer;
-    margin-left: 10px;
-    width: 84px;
-    height: 35px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 5px;
-    background-color: #52b6ff;
-    color: white;
-    font-family: "Lexend Deca", sans-serif;
-    font-size: 16px;
-    border: none;
-  }
-`;
-
-const ContainerContent = styled.div`
-  padding: 15px;
-  input {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: "Lexend Deca", sans-serif;
-    width: 100%;
-    font-size: 18px;
-    padding: 5px 5px;
-    border: 1px solid #d4d4d4;
-    border-radius: 4px;
-  }
-  input::placeholder {
-    color: #d4d4d4;
-  }
-`;
-
-const HabitForm = styled.form`
-  width: 100%;
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 15px;
-  border-radius: 5px;
-  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.15);
-`;
 
 const Title = styled.div`
   display: flex;

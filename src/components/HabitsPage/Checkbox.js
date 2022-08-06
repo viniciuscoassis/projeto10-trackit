@@ -1,10 +1,32 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { ContractOutline } from "react-ionicons";
 import styled from "styled-components";
 
-export default function Checkbox() {
-  const [isClicked, setIsClicked] = useState(false);
+export default function Checkbox({
+  children,
+  setDays,
+  days,
+  index,
+  isSelected,
+  isLoading,
+}) {
+  const [isClicked, setIsClicked] = useState(isSelected ? isSelected : false);
 
-  return <Wrapper></Wrapper>;
+  return (
+    <Wrapper
+      isClicked={isClicked}
+      onClick={
+        isLoading
+          ? console.log("carregando")
+          : () => {
+              setIsClicked(!isClicked);
+              setDays([...days, index]);
+            }
+      }
+    >
+      {children}
+    </Wrapper>
+  );
 }
 
 const Wrapper = styled.li`
