@@ -10,8 +10,7 @@ export default function Footer() {
 
   let rightPercentage =
     (porcentagem.totalDone / porcentagem.totalQestion) * 100;
-  console.log(rightPercentage);
-  console.log(porcentagem);
+
   return (
     <Wrapper>
       <Container>
