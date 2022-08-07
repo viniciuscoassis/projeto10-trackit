@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../assets/img/logo.png";
@@ -17,7 +17,15 @@ export default function LoginPage({ type }) {
 
   let navigate = useNavigate();
 
+  if (localStorage.length > 0) {
+    setTimeout(() => {
+      navigate("/hoje");
+    }, 1000);
+  }
+
   function handleSignUp() {
+    alert("Cadastro feito com sucesso");
+    setForm({ email: form.email, password: form.password });
     setIsDisabled(false);
     navigate("/");
   }

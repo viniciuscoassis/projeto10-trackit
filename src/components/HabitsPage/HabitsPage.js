@@ -12,8 +12,6 @@ export default function HabitsPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [shownHabits, setShownHabits] = useState(null);
 
-  useEffect(() => console.log(days), []);
-
   useEffect(() => {
     getHabits().then((value) => setShownHabits(value.data));
   }, [shownHabits]);
@@ -26,16 +24,21 @@ export default function HabitsPage() {
     setIsLoading(true);
 
     promisse
-      .then((value) => {
+      .then(() => {
         setIsLoading(false);
       })
-      .catch(() => setIsLoading(false));
+      .catch(() => {
+        setIsLoading(false);
+        alert("Houve um erro ao criar seu hábito, tente novamente");
+      });
 
     body = null;
     setDays([]);
     setNameCreatedHabit("");
+
     setTimeout(() => {
       setCreateHabits(false);
+      window.location.reload(false);
     }, 1000);
   }
 
@@ -51,7 +54,7 @@ export default function HabitsPage() {
         isLoading={isLoading}
         sendHabit={sendHabit}
         createHabits={createHabits}
-        setCreateHabits={createHabits}
+        setCreateHabits={setCreateHabits}
         setNameCreatedHabit={setNameCreatedHabit}
         nameCreatedHabit={nameCreatedHabit}
         setDays={setDays}
@@ -59,7 +62,7 @@ export default function HabitsPage() {
       />
 
       <Container>
-        {shownHabits ? (
+        {shownHabits && shownHabits.length > 0 ? (
           shownHabits.map((value) => (
             <HabitsListed key={value.id} habit={value} />
           ))

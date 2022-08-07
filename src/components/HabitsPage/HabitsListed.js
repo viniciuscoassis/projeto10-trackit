@@ -28,7 +28,7 @@ export default function HabitsListed({ habit }) {
       <Checkboxes>
         {thisWeek.map((value) => (
           <Checkbox
-            onClick={() => console.log("bloqueadoj")}
+            onClick={() => console.log("bloqueado")}
             key={value.id}
             isSelected={value.selected}
           >

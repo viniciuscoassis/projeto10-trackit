@@ -21,7 +21,7 @@ export default function Footer() {
         <Link to="/hoje">
           <Hoje>
             <CircularProgressbar
-              value={rightPercentage}
+              value={isNaN(rightPercentage) ? 0 : rightPercentage}
               text={`Hoje`}
               background
               backgroundPadding={6}

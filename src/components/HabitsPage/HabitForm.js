@@ -34,6 +34,7 @@ export default function HabitForm({
           placeholder="nome do hábito"
           onChange={(e) => setNameCreatedHabit(e.target.value)}
           value={nameCreatedHabit}
+          required
         ></input>
         <Checkboxes>
           {defaultWeek.map((value) => (
