@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import logo from "../assets/img/TrackIt.png";
+
+import logo from "../../assets/img/TrackIt.png";
 
 export default function Headers({ profilePic }) {
   return (

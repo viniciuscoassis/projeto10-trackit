@@ -47,12 +47,12 @@ function getTodaysHabit() {
 
 function postHabitDone(id) {
   let config = createHeaders();
-  let promisse = axios.post(`${BASE_URL}habits/${id}/check`, config);
+  let promisse = axios.post(`${BASE_URL}habits/${id}/check`, {}, config);
   return promisse;
 }
-function postHabitDeselect(id, body) {
+function postHabitUndone(id) {
   let config = createHeaders();
-  let promisse = axios.post(`${BASE_URL}habits/${id}/uncheck`, body, config);
+  let promisse = axios.post(`${BASE_URL}habits/${id}/uncheck`, {}, config);
   return promisse;
 }
 
@@ -69,7 +69,7 @@ export {
   getHabits,
   getTodaysHabit,
   postHabitDone,
-  postHabitDeselect,
+  postHabitUndone,
   getHabitHistory,
   deleteHabit,
 };

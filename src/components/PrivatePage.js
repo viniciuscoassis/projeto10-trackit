@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import UserContext from "../assets/Context";
 import Footer from "./Footer/Footer";
-import Headers from "./Headers";
+import Headers from "./Header/Headers";
 
 export default function PrivatePage({ children }) {
   const auth = JSON.parse(localStorage.getItem("trackit"));
