@@ -31,6 +31,7 @@ export default function HabitsListed({ habit }) {
             onClick={() => console.log("bloqueado")}
             key={value.id}
             isSelected={value.selected}
+            type="listed"
           >
             {value.weekday}
           </Checkbox>

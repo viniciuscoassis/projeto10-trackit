@@ -9,6 +9,7 @@ export default function Checkbox({
   index,
   isSelected,
   isLoading,
+  type,
 }) {
   const [isClicked, setIsClicked] = useState(isSelected ? isSelected : false);
 
@@ -17,7 +18,9 @@ export default function Checkbox({
       isClicked={isClicked}
       onClick={
         isLoading
-          ? console.log("carregando")
+          ? () => console.log("Função desabilitada")
+          : type == "listed"
+          ? () => console.log("Função desabilitada")
           : () => {
               setIsClicked(!isClicked);
               setDays([...days, index]);

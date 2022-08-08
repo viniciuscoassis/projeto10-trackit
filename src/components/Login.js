@@ -17,12 +17,6 @@ export default function LoginPage({ type }) {
 
   let navigate = useNavigate();
 
-  if (localStorage.length > 0) {
-    setTimeout(() => {
-      navigate("/hoje");
-    }, 1000);
-  }
-
   function handleSignUp() {
     alert("Cadastro feito com sucesso");
     setForm({ email: form.email, password: form.password });
@@ -39,22 +33,21 @@ export default function LoginPage({ type }) {
     let promisse;
     promisse = postLogin(form);
     setIsDisabled(true);
-    promisse
-      .then((res) => {
-        setInfoUser(res.data);
-        setIsDisabled(false);
-        localStorage.setItem(
-          "trackit",
-          JSON.stringify({ token: res.data.token, timestamp: +new Date() })
-        );
-        navigate("/hoje", {
-          state: { dados: res.data },
-        });
-      })
-      .catch((res) => {
-        setIsDisabled(false);
-        alert(res.response.data.message);
+    promisse.then((res) => {
+      setInfoUser(res.data);
+      setIsDisabled(false);
+      localStorage.setItem(
+        "trackit",
+        JSON.stringify({ token: res.data.token, timestamp: +new Date() })
+      );
+      navigate("/hoje", {
+        state: { dados: res.data },
       });
+    });
+    // .catch((res) => {
+    //   setIsDisabled(false);
+    //   alert(res.response.data.message);
+    // });
   }
 
   function submitForm(e) {
